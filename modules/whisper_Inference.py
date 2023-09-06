@@ -23,6 +23,7 @@ class WhisperInference(BaseInterface):
 
         def progress_callback(progress_value):
             progress(progress_value, desc="Transcribing..")
+            print(f'progress... {progress_value}')
 
         try:
             if model_size != self.current_model_size or self.model is None:
@@ -34,6 +35,7 @@ class WhisperInference(BaseInterface):
                 lang = None
 
             progress(0, desc="Loading Audio..")
+            print(f'Loading Audio...')
 
             files_info = {}
             for fileobj in fileobjs:
@@ -42,10 +44,12 @@ class WhisperInference(BaseInterface):
 
                 translatable_model = ["large", "large-v1", "large-v2"]
                 if istranslate and self.current_model_size in translatable_model:
-                    result = self.model.transcribe(audio=audio, language=lang, verbose=False, task="translate",
+                    print(f'task translate')
+                    result = self.model.transcribe(audio=audio, language=lang, verbose=True, task="translate",
                                                    progress_callback=progress_callback)
                 else:
-                    result = self.model.transcribe(audio=audio, language=lang, verbose=False,
+                    print(f'task transcribe')
+                    result = self.model.transcribe(audio=audio, language=lang, verbose=True,
                                                    progress_callback=progress_callback)
 
                 progress(1, desc="Completed!")
